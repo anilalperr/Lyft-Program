@@ -9,5 +9,5 @@ class NubbinBattery(Battery, ABC):
     
      def needs_service(self)->bool:
         self.current_date = datetime.today().date()
-        return self.current_date > self.last_service_date + 4
+        return self.current_date > self.last_service_date.replace(year = self.last_service_date.year + 4)
             
