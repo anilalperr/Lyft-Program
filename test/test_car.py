@@ -6,6 +6,8 @@ from batteries.nubbin_battery import NubbinBattery
 from engines.capulet_engine import CapuletEngine
 from engines.willoughby_engine import WilloughbyEngine
 from engines.sternman_engine import SternmanEngine
+from tires.carrigan_tires import CarriganTires
+from tires.octoprime_tires import OctoprimeTires
 
 class TestCapuletEngine(unittest.TestCase):
     def test_capulet_needs_service(self):
@@ -55,14 +57,14 @@ class TestSternmanEngine(unittest.TestCase):
 class TestSpindlerBattery(unittest.TestCase):
     def test_spindler_needs_service(self):
         today = datetime.today().date()
-        last_service_date = today.replace(year=today.year - 3)
+        last_service_date = today.replace(year=today.year - 4)
         
         spindler_battery = SpindlerBattery(last_service_date, today)
         self.assertTrue(spindler_battery.needs_service())
     
     def test_spindler_does_not_need_service(self):
         today = datetime.today().date()
-        last_service_date = today.replace(year=today.year - 1)
+        last_service_date = today.replace(year=today.year - 2)
         
         spindler_battery = SpindlerBattery(last_service_date, today)
         self.assertFalse(spindler_battery.needs_service())
@@ -82,6 +84,39 @@ class TestNubbinBattery(unittest.TestCase):
         nubbin_battery = NubbinBattery(last_service_date, today)
         self.assertFalse(nubbin_battery.needs_service())
 
+class TestCarriganTires(unittest.TestCase):
+    def test_carrigan_needs_service(self):
+        carrigan_tires1 = CarriganTires([0, 0.1, 0.2, 0.9])
+        self.assertTrue(carrigan_tires1.needs_service())
+        
+        carrigan_tires2 = CarriganTires([0, 0.1, 1, 0.9])
+        self.assertTrue(carrigan_tires2.needs_service())
+        
+        carrigan_tires3 = CarriganTires([0, 0.95, 1, 0.9])
+        self.assertTrue(carrigan_tires3.needs_service())
+        
+        carrigan_tires4 = CarriganTires([0.9, 0.95, 1, 0.9])
+        self.assertTrue(carrigan_tires4.needs_service())
+    
+    def test_carrigan_does_not_need_service(self):
+        carrigan_tires = CarriganTires([0,0.5,0.89,0.4])
+        self.assertFalse(carrigan_tires.needs_service())
+        
+
+class TestOctoprimeTires(unittest.TestCase):
+    def test_octoprime_needs_service(self):
+        octoprime_tires1 = OctoprimeTires([0.2, 1, 0.9, 0.9])
+        self.assertTrue(octoprime_tires1.needs_service())
+        
+        octoprime_tires2 = OctoprimeTires([1, 1, 1, 1])
+        self.assertTrue(octoprime_tires2.needs_service())
+    
+    def test_octoprime_does_not_need_service(self):
+        octoprime_tires1 = OctoprimeTires([0.19, 1, 0.9, 0.9])
+        self.assertFalse(octoprime_tires1.needs_service())
+        
+        octoprime_tires2 = OctoprimeTires([0, 0.1, 0.5, 0.2])
+        self.assertFalse(octoprime_tires2.needs_service())
 
 
 if __name__ == '__main__':
